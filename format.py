@@ -1,4 +1,4 @@
-data =[
+indicator_data  =[
 {'id': 4036382742, 'indicator': 'https://fondfbr.ru/de/artikel/german-child-abuse-de/', 'type': 'URL', 'created': '2025-02-13T10:39:45', 'content': '', 'title': '', 'description': '', 'expiration': None, 'is_active': 1, 'role': None},
 {'id': 4036382743, 'indicator': 'https://fondfbr.ru/de/artikel/germany-ampel-against-opposition-de/', 'type': 'URL', 'created': '2025-02-13T10:39:45', 'content': '', 'title': '', 'description': '', 'expiration': None, 'is_active': 1, 'role': None},
 {'id': 4036382744, 'indicator': 'https://fondfbr.ru/de/artikel/germany-censorship-de/', 'type': 'URL', 'created': '2025-02-13T10:39:45', 'content': '', 'title': '', 'description': '', 'expiration': None, 'is_active': 1, 'role': None},
@@ -11,15 +11,18 @@ data =[
 ]
 
 
-for i in data:
-    print(i['id'])
 
 
-# indicator_data = (
-#     data['id'],
+# data = (
+#     data[0]['id'],
 #     data['indicator'],
 #     data.get('source', ''),  # Using get() with default value in case source is not in input
 #     data.get('description', ''),
 #     data['created']
 # )
+
+for data in indicator_data :
+    print("_"* 10)
+    print(data['id'], data['type'], data['indicator'],  data.get('source', ''), data.get('description', ''), data['created'])
+    print("_"* 10)
 
