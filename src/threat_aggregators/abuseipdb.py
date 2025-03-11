@@ -1,5 +1,10 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+
 import requests
-from threatintel_api.config import ABUSEIPDB_API_KEY, ABUSEIPDB_URL
+from threatintel_api.config import *
+
 
 def get_abuseipdb_pulse():
     """Fetch malicious IPs from AbuseIPDB."""
@@ -20,3 +25,5 @@ def get_abuseipdb_pulse():
     except requests.exceptions.RequestException as e:
         print(f"[-] Error fetching data from AbuseIPDB: {e}")
         return None
+    
+

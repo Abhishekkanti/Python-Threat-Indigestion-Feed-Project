@@ -20,6 +20,34 @@ def create_db():
             date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )"""
     )
+    
+    # Add new CVE details table
+    cursor.execute(
+        """CREATE TABLE IF NOT EXISTS cve_details (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cve_id TEXT UNIQUE,
+            title TEXT,
+            date_published TEXT,
+            severity TEXT,
+            base_score REAL,
+            description TEXT,
+            affected_products TEXT,
+            date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )"""
+    )
+    
+    # Add table for CVE references
+    cursor.execute(
+        """CREATE TABLE IF NOT EXISTS cve_references (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            cve_id TEXT,
+            url TEXT,
+            tags TEXT,
+            FOREIGN KEY (cve_id) REFERENCES cve_details (cve_id),
+            UNIQUE(cve_id, url)
+        )"""
+    )
+
     cursor.execute(
         """CREATE TABLE IF NOT EXISTS malicious_ips(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,7 +90,7 @@ def insert_cve(indicator, description, severity):
     try:
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
-        cursor.execute("INSERT OR IGNORE INTO CVEs (indicator, description, severity) VALUES (?, ?, ?)", (indicator, description, severity))
+        cursor.execute("INSERT OR IGNORE INTO CVE (indicator, description, severity) VALUES (?, ?, ?)", (indicator, description, severity))
         conn.commit()
     except sqlite3.Error as e:
         print(f"[-] SQLite Error: {e}")
@@ -108,6 +136,38 @@ def insert_hash(file_hash, source, description):
         conn = sqlite3.connect(DB_FILE)
         cursor = conn.cursor()
         cursor.execute("INSERT OR IGNORE INTO malicious_hashes (file_hash, source, description) VALUES (?, ?, ?)", (file_hash, source, description))
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"[-] SQLite Error: {e}")
+    finally:
+        conn.close()
+
+def insert_cve_details(cve_id, title, date_published, severity, base_score, description, affected_products):
+    """Insert detailed CVE information into the database."""
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT OR REPLACE INTO cve_details 
+            (cve_id, title, date_published, severity, base_score, description, affected_products)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """, (cve_id, title, date_published, severity, base_score, description, affected_products))
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"[-] SQLite Error: {e}")
+    finally:
+        conn.close()
+
+def insert_cve_reference(cve_id, url, tags):
+    """Insert CVE reference information into the database."""
+    try:
+        conn = sqlite3.connect(DB_FILE)
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT OR IGNORE INTO cve_references 
+            (cve_id, url, tags)
+            VALUES (?, ?, ?)
+        """, (cve_id, url, tags))
         conn.commit()
     except sqlite3.Error as e:
         print(f"[-] SQLite Error: {e}")

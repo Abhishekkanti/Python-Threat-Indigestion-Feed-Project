@@ -1,5 +1,9 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
 import requests
 from threatintel_api.config import URLHAUS_URL
+from threatintel_api.config import *
 
 def get_urlhaus_malicious_urls():
     """Fetch recent malicious URLs from URLhaus."""

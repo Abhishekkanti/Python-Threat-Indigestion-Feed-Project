@@ -1,9 +1,9 @@
 import requests
 import json
-from threatintel_api.config import *
-import AbuseIPDB
-import sqlite
-import URLhaus
+from src.threatintel_api.config import *
+from src.threat_aggregators.abuseipdb import get_abuseipdb_pulse
+from src.threat_aggregators.urlhaus import get_urlhaus_malicious_urls
+from src.threat_aggregators.virustotal import fetch_cve_details, store_cve_details
 
 
 
@@ -44,3 +44,30 @@ import URLhaus
 #     print("[-] URLhaus data inserted successfully")
 # except Exception as e:
 #         print("[-] Error: ", e)
+
+
+# src/
+# ├── config/
+# │   ├── __init__.py
+# │   └── api_config.py
+# ├── database/
+# │   ├── __init__.py
+# │   └── db_operations.py
+# ├── data/
+# │   └── threat_intel.db
+# └── threat_aggregators/
+#     ├── __init__.py
+#     └── virustotal.py
+
+if __name__ == "__main__":
+    # Test the functionality
+    test_cve_id = "CVE-2017-9841"
+    print(f"[+] Fetching details for {test_cve_id}")
+    cve_details = fetch_cve_details(test_cve_id)
+    if cve_details:
+        success = store_cve_details(cve_details)
+        if success:
+            print(f"[+] Successfully stored details for {test_cve_id}")
+        else:
+            print(f"[-] Failed to store details for {test_cve_id}")
+

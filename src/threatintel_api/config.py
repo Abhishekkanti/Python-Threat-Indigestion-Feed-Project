@@ -19,3 +19,10 @@ ALIENVAULT_URL =  "https://otx.alienvault.com/api/v1/pulses/subscribed"  #"https
 ABUSEIPDB_URL = "https://api.abuseipdb.com/api/v2/blacklist"
 VIRUSTOTAL_URL = "https://www.virustotal.com/api/v3/intelligence/search"
 URLHAUS_URL = "https://urlhaus-api.abuse.ch/v1/urls/recent/limit/5"  #urls/recent/
+PULSEDIVE_URL = "https://pulsedive.com"
+PULSEDIVE_API_KEY = "d5918f9544e84c16988e5eb1badf6759f3727ad86a95f6a08b58ccdcbdf86a04"  # Get this from your Pulsedive account
+
+
+#Snyk.io 
+SYNK_URL = "https://security.snyk.io/vulns"
+SYNK_API_KEY = "15a5aa03-9fe7-4834-9f3a-6b7df9e4049a"
